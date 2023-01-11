@@ -2,6 +2,8 @@
 import express from "express"; // "type": "module"
 import { MongoClient } from "mongodb";
 import * as dotenv from 'dotenv'  
+import moviesRouter from "./routes/movies.routes.js" 
+
 dotenv.config() 
 
 console.log(process.env.MONGO_URL)
@@ -24,57 +26,8 @@ app.get("/", function (request, response) {
   response.send("Hello 🙋‍♂️, 🌏 🎊✨🤩");
 });
 
-//GET ALL
-app.get("/movies", async function (request, response) {
-  if(request.query.rating){
-    request.query.rating=+request.query.rating;
-  }
-
-  //Cursor - Pagination | Cursor-> Array | toArray()
-  const movie=await client.db("gopi").collection("gopi").find(request.query).toArray();
-  console.log(movie)  
-  response.send(movie); 
-  });
-
-//GET BY ID
-app.get("/movies/:id", async function (request, response) {
-     const {id}=request.params; 
-
-    //db.gopi.findOne{id:99}
-    const movie=await client.db("gopi").collection("gopi").findOne({id:id})
-
-     console.log(movie);
-     movie ? response.send(movie) : response.status(404).send({message:"Movie not found"});
-  });
-//POST 
-  app.post("/movies",async function (request, response) {
-    const data=request.body;
-    console.log(data)
-    const movie = await client.db("gopi").collection("gopi").insertMany(data)
-    response.send(movie);
-  });
-//DELETE
-app.delete("/movies/:id", async function (request, response) {
-const {id}=request.params; 
-
- //db.gopi.findOne{id:99}
- const movie=await client.db("gopi").collection("gopi").deleteOne({id:id})
-
-  console.log(movie);
-  movie.deletedCount>0 ? response.send({message:"Movie deleted successfully"}) : response.status(404).send({message:"Movie not found"});
-});
+app.use("/movies", moviesRouter)
  
-//UPDATE
-app.put("/movies/:id", async function (request, response) {
-  const {id}=request.params;    
-  const data=request.body;   
-
-  const movie=await client.db("gopi").collection("gopi").updateOne({id:id},{$set:data})
-
-  console.log(movie);
-  response.send(movie);
-});
-  
 app.listen(PORT, () => console.log(`The server started in: ${PORT} ✨✨`));
 
-//node index.js
+export {client};

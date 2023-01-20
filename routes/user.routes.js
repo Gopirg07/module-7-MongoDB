@@ -28,6 +28,7 @@ router.post("/signup", async function (request, response) {
 
 //Login 
 router.post("/login", async function (request, response) {
+    
     const { username, password } = request.body;
 
     const userFromDB = await getUserByName(username);

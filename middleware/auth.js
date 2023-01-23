@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 export const auth = (request, response, next) => {
     try {
         const token = request.header("x-auth-token");
+        request.roleId= request.header("roleId")
         console.log("Token : ", token);
         jwt.verify(token, process.env.SECRET_KEY);
         next();

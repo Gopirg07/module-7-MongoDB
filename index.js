@@ -118,8 +118,8 @@ async function main() {
     host: "smtp.gmail.com",
     secure: false, // true for 465, false for other ports
     auth: {
-      user: NODE_MAILER_USER, // generated ethereal user
-      pass: NODE_MAILER_PASSWORD, // generated ethereal password
+      user: process.env.NODE_MAILER_USER, // generated ethereal user
+      pass: process.env.NODE_MAILER_PASSWORD, // generated ethereal password
     },
   });
 

@@ -27,7 +27,7 @@ router.get("/:id", async function (request, response) {
 });
 
 //POST  
-router.post("/", async function (request, response) {
+router.post("/addmovie", async function (request, response) {
   const data = request.body;
   console.log(data)
   const movie = await createMovies(data)
